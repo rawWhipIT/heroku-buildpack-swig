@@ -6,7 +6,7 @@ BUILD_DIR=$1
 
 echo $BIN_DIR
 echo $BUILD_DIR
-echo $PATH
+echo "Path (release is): $PATH"
 
 cat << EOF
 ---

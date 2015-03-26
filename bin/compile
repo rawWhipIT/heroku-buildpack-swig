@@ -19,7 +19,7 @@ echo "Root Dir: $ROOT_DIR"
 echo "Cache Directory: $CACHE_DIR"
 echo "Build Directory: $BUILD_DIR"
 echo "Env Dir: $ENV_DIR"
-
+echo "Profile PAth: $PROFILE_PATH"
 # Functions
 # Syntax sugar.
 indent() {
@@ -51,20 +51,35 @@ un-set-env() {
   echo "unset $1" >> $PROFILE_PATH
 }
 
+# Switch to the repo's context.
+cd $BUILD_DIR
+pwd
+
 # Where to store the Pip download cache.
 CACHED_DIRS=".heroku"
 
+# ### The Cache
+mkdir -p $CACHE_DIR
+
 # Prepend proper path buildpack use.
-#export PATH=$BUILD_DIR/.heroku/python/bin:$BUILD_DIR/.heroku/vendor/bin:$PATH
+export PATH=$BUILD_DIR/.heroku/python/bin:$BUILD_DIR/.heroku/vendor/bin:$PATH
 
 # Restore old artifacts from the cache.
-for dir in $CACHED_DIRS; do
-  echo $dir
-  cp -R $CACHE_DIR/$dir . &> /dev/null || true
-done
+if [-d $CACHED_DIRS/swig]; then
+    echo "Yes swig is in the $CACHED_DIRS"
+else
+    echo "No swig in not in the profile dir"
+fi
 
 
 puts-step "Preparing SWIG 2.0.5"
+
+FILES=$CACHE_DIR/swig/*
+for f in $FILES
+do
+  echo "Swig File: $f file..."
+done
+
 
 # Install SWIG
 if [ ! -d $CACHE_DIR/swig ]; then
