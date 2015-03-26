@@ -43,13 +43,13 @@ un-set-env() {
 function load_config() {
   puts-step "Loading Configuration"
 
-  local config_file="$ROOT_DIR/swig_buildpack.config"
+  local config_file="$BUILD_PACK_PATH/swig_buildpack.config"
   echo "File: $config_file" | indent
   if [ -f $config_file ];
   then
     source $config_file
   else
-    puts-warn "WARNING: swig_buildpack.config wasn't found in the buildpack"
+    puts-warn "WARNING: $BUILD_PACK_PATH/swig_buildpack.config wasn't found in the buildpack"
     exit 1
   fi
 
