@@ -44,7 +44,7 @@ function load_config() {
   puts-step "Loading Configuration"
 
   local config_file="$ROOT_DIR/swig_buildpack.config"
-  echo "File: $(config_file)" | indent
+  echo "File: $config_file" | indent
   if [ -f $config_file ];
   then
     source $config_file
