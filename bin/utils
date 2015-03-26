@@ -45,8 +45,7 @@ function load_config() {
 
   local config_file="$ROOT_DIR/swig-buildpack.config"
   echo "File: $config_file" | indent
-  if [ -f $config_file ];
-  then
+  if [ -f $config_file ]; then
     source $config_file
   else
     puts-warn "WARNING: $config_file wasn't found in the buildpack"

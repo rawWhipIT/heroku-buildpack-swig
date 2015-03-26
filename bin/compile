@@ -35,16 +35,22 @@ mkdir -p $CACHE_DIR
 # profile.d
 mkdir -p $(dirname $PROFILE_PATH)
 
-
+puts-step "Checking cache"
+cache_version=$CACHE_DIR/swig_$SWIG_VERSION
 # Install SWIG
-if [ ! -d $CACHE_DIR/swig_$SWIG_VERSION ]; then
+if [ ! -d $cache_version ]; then
     echo "Not found in cache - installing" | indent
     puts-step "Fetching and installing SWIG 2 from $SWIG_SOURCE_URL"
     curl -O $SWIG_SOURCE_URL
-    puts-step "Installing SWIG $SWIG_VERSION"
+    echo "Installing SWIG $SWIG_VERSION" | indent
     tar_file=swig.$SWIG_VERSION.tar.gz
-    tar xzvf $tar_file >/dev/null 2>&1
-    mv swig $CACHE_DIR/swig_$SWIG_VERSION
+    echo $tar_file
+    if [! -d $tar_file ]; then
+      puts-warn "WARNING: Tar file not downloaded properly"
+      exit 1
+    fi
+    tar xzvf $tar_file
+    mv swig $cache_version
     rm $tar_file
     echo "SWIG $SWIG_VERSION installed" | indent
 else
