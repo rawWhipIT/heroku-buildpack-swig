@@ -43,8 +43,8 @@ un-set-env() {
 function load_config() {
   puts-step "Loading Configuration"
 
-  local config_file="$BIN_DIR/swig_buildpack.config"
-
+  local config_file="$ROOT_DIR/swig_buildpack.config"
+  echo "File: $(config_file)" | indent
   if [ -f $config_file ];
   then
     source $config_file

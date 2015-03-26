@@ -18,7 +18,7 @@ APP_DIR='/app'
 PROFILE_PATH="$BUILD_DIR/.profile.d/swig.sh"
 
 # We'll need to send these statics to other scripts we `source`.
-export BUILD_DIR CACHE_DIR BIN_DIR PROFILE_PATH
+export BUILD_DIR CACHE_DIR BIN_DIR PROFILE_PATH ROOT_DIR
 
 # Utility Functions
 source $BIN_DIR/utils
