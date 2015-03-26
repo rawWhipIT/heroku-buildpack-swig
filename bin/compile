@@ -45,7 +45,7 @@ if [ ! -d $cache_version ]; then
     echo "Installing SWIG $SWIG_VERSION" | indent
     tar_file=swig.$SWIG_VERSION.tar.gz
     echo $tar_file
-    if [! -d $tar_file ]; then
+    if [! -f $tar_file ]; then
       puts-warn "WARNING: Tar file not downloaded properly"
       exit 1
     fi
