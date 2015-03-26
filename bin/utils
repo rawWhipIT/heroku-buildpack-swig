@@ -43,16 +43,13 @@ un-set-env() {
 function load_config() {
   puts-step "Loading Configuration"
 
-  local config_file="$BUILD_DIR/swig_buildpack.config"
+  local config_file="$BIN_DIR/swig_buildpack.config"
 
-  # Source for default versions file from buildpack first
-  source $BUILD_DIR/swig_buildpack.config
-
-  if [ -f $custom_config_file ];
+  if [ -f $config_file ];
   then
-    source $custom_config_file
+    source $config_file
   else
-    puts-warn "WARNING: swig_buildpack.config wasn't found in the app"
+    puts-warn "WARNING: swig_buildpack.config wasn't found in the buildpack"
     exit 1
   fi
 
