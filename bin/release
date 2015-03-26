@@ -10,5 +10,6 @@ echo $PATH
 
 cat << EOF
 ---
-PATH: $PATH
+config_vars:
+    PATH: $PATH
 EOF
