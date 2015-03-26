@@ -57,6 +57,8 @@ CACHED_DIRS=".heroku"
 # ### The Cache
 mkdir -p $CACHE_DIR
 
+mkdir -p $(dirname $PROFILE_PATH)
+
 # Prepend proper path buildpack use.
 export PATH=$BUILD_DIR/.heroku/python/bin:$BUILD_DIR/.heroku/vendor/bin:$PATH
 
@@ -66,7 +68,6 @@ puts-step "Preparing SWIG 2.0.5"
 # Install SWIG
 if [ ! -d $CACHE_DIR/swig ]; then
     echo "Not found in cache - installing" | indent
-    cd $BUILD_DIR
     SOURCE_TARBALL='https://s3.amazonaws.com/p22-heroku-buildpacks/libraries/swig.tar.gz'
     puts-step "Fetching and installing SWIG 2 from $SOURCE_TARBALL"
     curl -L $SOURCE_TARBALL | tar xzvf >/dev/null 2>&1
