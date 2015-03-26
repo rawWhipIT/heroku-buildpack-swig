@@ -22,11 +22,9 @@ export BUILD_DIR CACHE_DIR BIN_DIR PROFILE_PATH ROOT_DIR
 # Utility Functions
 source $BIN_DIR/utils
 puts-step "Preparing SWIG"
-echo "Stack: $STACK" | indent
+echo "* Stack: $STACK" | indent
 
 load_config
-
-echo "Compile Script: ${SWIG_DOWNLOAD_URL}" | indent
 
 # Switch to the repo's context.
 cd $BUILD_DIR
@@ -37,21 +35,20 @@ mkdir -p $CACHE_DIR
 # profile.d
 mkdir -p $(dirname $PROFILE_PATH)
 
-# Prepend proper path buildpack use.
-#export PATH=$BUILD_DIR/.heroku/python/bin:$BUILD_DIR/.heroku/vendor/bin:$PATH
-
 
 # Install SWIG
 if [ ! -d $CACHE_DIR/swig_$SWIG_VERSION ]; then
     echo "Not found in cache - installing" | indent
     puts-step "Fetching and installing SWIG 2 from $SWIG_SOURCE_URL"
-    curl -L $SWIG_SOURCE_URL | tar xzvf >/dev/null 2>&1
+    curl -O $SWIG_SOURCE_URL
     puts-step "Installing SWIG $SWIG_VERSION"
+    tar_file=swig.$SWIG_VERSION.tar.gz
+    tar xzvf $tar_file >/dev/null 2>&1
     mv swig $CACHE_DIR/swig_$SWIG_VERSION
-    rm swig.$SWIG_VERSION.tar.gz
-    echo "SWIG installed" | indent
+    rm $tar_file
+    echo "SWIG $SWIG_VERSION installed" | indent
 else
-    echo "SWIG detected in the cache" | indent
+    echo "SWIG $SWIG_VERSION detected in the cache" | indent
 fi
 puts-step "Making $SWIG_SRC folder and copying source"
 mkdir -p $SWIG_SRC
