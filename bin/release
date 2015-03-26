@@ -1,3 +1,14 @@
 #!/usr/bin/env bash
 # bin/release <build-dir>
-echo "--- {}" #just returning an empty YAML hash
+
+BIN_DIR=$(cd $(dirname $0); pwd) # absolute path
+BUILD_DIR=$1
+
+echo $BIN_DIR
+echo $BUILD_DIR
+echo $PATH
+
+cat << EOF
+---
+PATH: $PATH
+EOF
