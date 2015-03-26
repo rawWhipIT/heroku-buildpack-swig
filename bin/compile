@@ -36,8 +36,7 @@ mkdir -p $CACHE_DIR
 mkdir -p $(dirname $PROFILE_PATH)
 
 puts-step "Checking cache"
-cache_version=$CACHE_DIR/swig_$SWIG_VERSION
-echo $cache_version
+cache_version=$CACHE_DIR/$SWIG_SRC
 # Install SWIG
 if [ ! -d $cache_version ]; then
     cd $BUILD_DIR
@@ -45,24 +44,18 @@ if [ ! -d $cache_version ]; then
     puts-step "Fetching and installing SWIG 2 from $SWIG_SOURCE_URL"
     mkdir -p $cache_version
     curl $SWIG_SOURCE_URL | tar zxv -C $cache_version &> /dev/null
-    #echo "Installing SWIG $SWIG_VERSION" | indent
-    #echo "Tar File: $tar_file" | indent
     if [ ! -d $cache_version ]; then
-      puts-warn "WARNING: Tar file not downloaded properly"
+      puts-warn "WARNING: SWIG not downloaded or installed properly"
       exit 1
     else
       echo "SWIG $SWIG_VERSION installed" | indent
     fi
-    # tar xzvf swig.$SWIG_VERSION.tar.gz >/dev/null 2>&1
-    # mv swig $cache_version
-    # rm $tar_file
-    # echo "SWIG $SWIG_VERSION installed" | indent
 else
     echo "SWIG $SWIG_VERSION detected in the cache" | indent
 fi
-puts-step "Making $SWIG_SRC folder and copying source"
+puts-step "Making $SWIG_SRC folder and copying source from $cache_version"
 mkdir -p $SWIG_SRC
-cp -R $CACHE_DIR/swig_$SWIG_VERSION $SWIG_SRC
+cp -R $cache_version $SWIG_SRC
 echo "Updating path in environment" | indent
 set-env PATH $PATH:$APP_DIR/$SWIG_SRC/swig/bin/
 echo "Setting SWIG_LIB environment variable" | indent
