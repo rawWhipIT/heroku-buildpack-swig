@@ -37,22 +37,26 @@ mkdir -p $(dirname $PROFILE_PATH)
 
 puts-step "Checking cache"
 cache_version=$CACHE_DIR/swig_$SWIG_VERSION
+echo $cache_version
 # Install SWIG
 if [ ! -d $cache_version ]; then
-    echo "Not found in cache - installing" | indent
+    cd $BUILD_DIR
+    echo "** Not found in cache - installing" | indent
     puts-step "Fetching and installing SWIG 2 from $SWIG_SOURCE_URL"
-    curl -O $SWIG_SOURCE_URL >/dev/null 2>&1
-    echo "Installing SWIG $SWIG_VERSION" | indent
-    tar_file=swig.$SWIG_VERSION.tar.gz
-    echo "Tar File: $tar_file" | indent
-    if [ ! -f $tar_file ]; then
+    mkdir -p $cache_version
+    curl $SWIG_SOURCE_URL | tar zxv -C $cache_version &> /dev/null
+    #echo "Installing SWIG $SWIG_VERSION" | indent
+    #echo "Tar File: $tar_file" | indent
+    if [ ! -d $cache_version ]; then
       puts-warn "WARNING: Tar file not downloaded properly"
       exit 1
+    else
+      echo "SWIG $SWIG_VERSION installed" | indent
     fi
-    tar xzvf swig.$SWIG_VERSION.tar.gz >/dev/null 2>&1
-    mv swig $cache_version
-    rm $tar_file
-    echo "SWIG $SWIG_VERSION installed" | indent
+    # tar xzvf swig.$SWIG_VERSION.tar.gz >/dev/null 2>&1
+    # mv swig $cache_version
+    # rm $tar_file
+    # echo "SWIG $SWIG_VERSION installed" | indent
 else
     echo "SWIG $SWIG_VERSION detected in the cache" | indent
 fi
