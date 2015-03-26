@@ -54,7 +54,6 @@ function load_config() {
   fi
 
   puts-step "SWIG Buildpack will use the following configuration:"
-  echo "* Stack ${STACK}" | indent
-  echo "* SWIG ${SWIG_VERSION} $SWIG_VERSION" | indent
-  echo "* SWIG Download URL ${SWIG_DOWNLOAD_URL}" | indent
+  echo "* SWIG $SWIG_VERSION" | indent
+  echo "* SWIG Source URL ${SWIG_SOURCE_URL}" | indent
 }
