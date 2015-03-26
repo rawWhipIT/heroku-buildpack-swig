@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+# Utility functions used by the other scripts
+
+
+# Syntax Sugar Functions
+# Indent Function
+# Borrowed from https://github.com/heroku/heroku-buildpack-pgbouncer/blob/master/bin/compile
+function indent() { 
+  c='s/^/       /'
+  case $(uname) in
+    Darwin) sed -l "$c";;
+    *)      sed -u "$c";;
+  esac
+}
+
+# Found in various buildpacks
+# Buildpack Steps.
+puts-step() {
+  echo "-----> $@"
+}
+
+# Buildpack Warnings.
+puts-warn() {
+  echo " !     $@"
+}
+
+# Usage: $ set-env key value
+set-env() {
+  echo "export $1=$2" >> $PROFILE_PATH
+}
+
+# Usage: $ set-default-env key value
+set-default-env() {
+  echo "export $1=\${$1:-$2}" >> $PROFILE_PATH
+}
+
+# Usage: $ set-default-env key value
+un-set-env() {
+  echo "unset $1" >> $PROFILE_PATH
+}
+
+
+function load_config() {
+  puts-step "Loading Configuration"
+
+  local config_file="$BUILD_DIR/swig_buildpack.config"
+
+  # Source for default versions file from buildpack first
+  source "${build_pack_path}/swig-buildpack.config"
+
+  if [ -f $custom_config_file ];
+  then
+    source $custom_config_file
+  else
+    puts-warn "WARNING: swig_buildpack.config wasn't found in the app"
+    puts-warn "Using default config from Elixir buildpack"
+  fi
+
+  puts-step "Will use the following configuration:"
+  echo "* Stack ${STACK}" | indent
+  echo "* SWIG ${SWIG_VERSION}" | indent
+  echo "* SWIG Download URL ${SWIG_DOWNLOAD_URL}" | indent
+}

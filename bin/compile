@@ -13,57 +13,33 @@ ROOT_DIR=$(dirname $BIN_DIR)
 BUILD_DIR=$1
 CACHE_DIR=$2
 ENV_DIR=$3
+APP_DIR='/app'
 
 PROFILE_PATH="$BUILD_DIR/.profile.d/swig.sh"
 
-## Functions
-# Syntax sugar.
-indent() {
-  sed "s/^/       /"
-}
+# We'll need to send these statics to other scripts we `source`.
+export BUILD_DIR CACHE_DIR BIN_DIR PROFILE_PATH
 
-# Buildpack Steps.
-puts-step() {
-  echo "-----> $@"
-}
+# Utility Functions
+source $BIN_DIR/utils
+puts-step "Preparing SWIG"
 
-# Buildpack Warnings.
-puts-warn() {
-  echo " !     $@"
-}
+load_config
 
-# Usage: $ set-env key value
-set-env() {
-  echo "export $1=$2" >> $PROFILE_PATH
-}
-
-# Usage: $ set-default-env key value
-set-default-env() {
-  echo "export $1=\${$1:-$2}" >> $PROFILE_PATH
-}
-
-# Usage: $ set-default-env key value
-un-set-env() {
-  echo "unset $1" >> $PROFILE_PATH
-}
-## End Functions
+echo "Compile Script: ${swig_version}" | indent
 
 # Switch to the repo's context.
 cd $BUILD_DIR
 
-# Where to store the Pip download cache.
-CACHED_DIRS=".heroku"
-
-# ### The Cache
+# Create directories
+# The Cache
 mkdir -p $CACHE_DIR
-
+# profile.d
 mkdir -p $(dirname $PROFILE_PATH)
 
 # Prepend proper path buildpack use.
-export PATH=$BUILD_DIR/.heroku/python/bin:$BUILD_DIR/.heroku/vendor/bin:$PATH
+#export PATH=$BUILD_DIR/.heroku/python/bin:$BUILD_DIR/.heroku/vendor/bin:$PATH
 
-
-puts-step "Preparing SWIG 2.0.5"
 
 # Install SWIG
 if [ ! -d $CACHE_DIR/swig ]; then
@@ -81,8 +57,8 @@ fi
 puts-step "Making .paybox folder and copying source"
 mkdir -p .paybox
 cp -R $CACHE_DIR/swig .paybox
-echo "Updating path" | indent
-set-env PATH $PATH:$BUILD_DIR/.paybox/swig/bin/
+echo "Updating path in environment" | indent
+set-env PATH $PATH:$APP_DIR/.paybox/swig/bin/
 echo "Setting SWIG_LIB environment variable" | indent
-set-env SWIG_LIB $BUILD_DIR/.paybox/swig/share/swig/2.0.5/
+set-env SWIG_LIB $APP_DIR/.paybox/swig/share/swig/2.0.5/
 puts-step "SWIG Complile Complete"
