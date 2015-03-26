@@ -37,6 +37,7 @@ mkdir -p $(dirname $PROFILE_PATH)
 
 puts-step "Checking cache"
 cache_version=$CACHE_DIR/$SWIG_SRC
+echo $cache_version
 # Install SWIG
 if [ ! -d $cache_version ]; then
     cd $BUILD_DIR
@@ -55,7 +56,7 @@ else
 fi
 puts-step "Making $SWIG_SRC folder and copying source from $cache_version"
 mkdir -p $SWIG_SRC
-cp -R $cache_version $SWIG_SRC
+cp -R $cache_version/ $SWIG_SRC
 echo "Updating path in environment" | indent
 set-env PATH $PATH:$APP_DIR/$SWIG_SRC/swig/bin/
 echo "Setting SWIG_LIB environment variable" | indent
