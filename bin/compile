@@ -14,6 +14,8 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 ENV_DIR=$3
 
+echo $PROFILE_PATH
+
 ## Functions
 # Syntax sugar.
 indent() {
@@ -58,34 +60,22 @@ mkdir -p $CACHE_DIR
 # Prepend proper path buildpack use.
 export PATH=$BUILD_DIR/.heroku/python/bin:$BUILD_DIR/.heroku/vendor/bin:$PATH
 
-# Restore old artifacts from the cache.
-if [ -d $CACHED_DIRS/swig]; then
-    echo "Yes swig is in the $CACHED_DIRS"
-else
-    echo "No swig in not in the profile dir"
-fi
-
 
 puts-step "Preparing SWIG 2.0.5"
 
-FILES=$CACHE_DIR/swig/*
-for f in $FILES
-do
-  echo "Swig File: $f file..."
-done
-
-
 # Install SWIG
 if [ ! -d $CACHE_DIR/swig ]; then
-  echo "Not found in cache - installing"
-  cd $BUILD_DIR
-  SOURCE_TARBALL='https://s3.amazonaws.com/p22-heroku-buildpacks/libraries/swig.tar.gz'
-  puts-step "Fetching and installing SWIG 2 from $SOURCE_TARBALL"
-  curl -L $SOURCE_TARBALL | tar xzvf >/dev/null 2>&1
-  puts-step "Installing SWIG..."
-  mv swig $CACHE_DIR/swig
-  rm swig.tar.gz
-  echo "SWIG installed" | indent
+    echo "Not found in cache - installing" | indent
+    cd $BUILD_DIR
+    SOURCE_TARBALL='https://s3.amazonaws.com/p22-heroku-buildpacks/libraries/swig.tar.gz'
+    puts-step "Fetching and installing SWIG 2 from $SOURCE_TARBALL"
+    curl -L $SOURCE_TARBALL | tar xzvf >/dev/null 2>&1
+    puts-step "Installing SWIG..."
+    mv swig $CACHE_DIR/swig
+    rm swig.tar.gz
+    echo "SWIG installed" | indent
+else
+    echo "SWIG detected in the cache" | indent
 fi
 puts-step "Making .paybox folder and copying source"
 mkdir -p .paybox
@@ -94,6 +84,6 @@ echo "Updating path" | indent
 PATH=$PATH:$BUILD_DIR/.paybox/swig/bin/
 export PATH
 echo "Setting SWIG_LIB environment variable" | indent
-set-env SWIG_LIB $BUILD_DIR/.paybox/swig/share/swig/2.0.5/
+export SWIG_LIB $BUILD_DIR/.paybox/swig/share/swig/2.0.5/
 echo $PATH
 puts-step "SWIG Complile Complete"
