@@ -8,7 +8,6 @@
 set -eo pipefail
 
 # Paths.
-BUILD_PACK_PATH=$(cd $(dirname $(dirname $0)); pwd)
 BIN_DIR=$(cd $(dirname $0); pwd) # absolute path
 ROOT_DIR=$(dirname $BIN_DIR)
 BUILD_DIR=$1
@@ -20,7 +19,7 @@ APP_DIR='/app'
 PROFILE_PATH="$BUILD_DIR/.profile.d/swig.sh"
 
 # We'll need to send these statics to other scripts we `source`.
-export BUILD_DIR CACHE_DIR BIN_DIR PROFILE_PATH BUILD_PACK_PATH
+export BUILD_DIR CACHE_DIR BIN_DIR PROFILE_PATH ROOT_DIR
 
 # Utility Functions
 source $BIN_DIR/utils
