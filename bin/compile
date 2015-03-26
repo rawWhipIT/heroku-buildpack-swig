@@ -14,21 +14,61 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 ENV_DIR=$3
 
+echo "Bin Dir: $BIN_DIR"
+echo "Root Dir: $ROOT_DIR"
 echo "Cache Directory: $CACHE_DIR"
+echo "Build Directory: $BUILD_DIR"
+echo "Env Dir: $ENV_DIR"
 
-# We'll need to send these statics to other scripts we `source`.
-export BUILD_DIR CACHE_DIR BIN_DIR PROFILE_PATH
-
+# Functions
 # Syntax sugar.
-source $BIN_DIR/utils
+indent() {
+  sed "s/^/       /"
+}
+
+# Buildpack Steps.
+puts-step() {
+  echo "-----> $@"
+}
+
+# Buildpack Warnings.
+puts-warn() {
+  echo " !     $@"
+}
+
+# Usage: $ set-env key value
+set-env() {
+  echo "export $1=$2" >> $PROFILE_PATH
+}
+
+# Usage: $ set-default-env key value
+set-default-env() {
+  echo "export $1=\${$1:-$2}" >> $PROFILE_PATH
+}
+
+# Usage: $ set-default-env key value
+un-set-env() {
+  echo "unset $1" >> $PROFILE_PATH
+}
+
+# Where to store the Pip download cache.
+CACHED_DIRS=".heroku"
 
 # Prepend proper path buildpack use.
-export PATH=$BUILD_DIR/.heroku/python/bin:$BUILD_DIR/.heroku/vendor/bin:$PATH
+#export PATH=$BUILD_DIR/.heroku/python/bin:$BUILD_DIR/.heroku/vendor/bin:$PATH
+
+# Restore old artifacts from the cache.
+for dir in $CACHED_DIRS; do
+  echo $dir
+  cp -R $CACHE_DIR/$dir . &> /dev/null || true
+done
+
 
 puts-step "Preparing SWIG 2.0.5"
 
 # Install SWIG
 if [ ! -d $CACHE_DIR/swig ]; then
+  echo "Not found in cache - installing"
   cd $BUILD_DIR
   SOURCE_TARBALL='https://s3.amazonaws.com/p22-heroku-buildpacks/libraries/swig.tar.gz'
   puts-step "Fetching and installing SWIG 2 from $SOURCE_TARBALL"
