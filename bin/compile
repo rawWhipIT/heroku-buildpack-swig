@@ -5,10 +5,7 @@
 #     $ bin/compile <build-dir> <cache-dir> <env-path>
 
 # Fail fast and fail hard.
-set -eo pipefail
-
-# Prepend proper path for virtualenv hackery. This will be deprecated soon.
-export PATH=:/usr/local/bin:$PATH
+#set -eo pipefail
 
 # Paths.
 BIN_DIR=$(cd $(dirname $0); pwd) # absolute path
@@ -16,6 +13,8 @@ ROOT_DIR=$(dirname $BIN_DIR)
 BUILD_DIR=$1
 CACHE_DIR=$2
 ENV_DIR=$3
+
+echo "Cache Directory: $CACHE_DIR"
 
 # We'll need to send these statics to other scripts we `source`.
 export BUILD_DIR CACHE_DIR BIN_DIR PROFILE_PATH
@@ -47,4 +46,5 @@ PATH=$PATH:$BUILD_DIR/.paybox/swig/bin/
 export PATH
 echo "Setting SWIG_LIB environment variable" | indent
 export SWIG_LIB=$BUILD_DIR/.paybox/swig/share/swig/2.0.5/
+echo $PATH
 puts-step "SWIG Complile Complete"
