@@ -14,7 +14,7 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 ENV_DIR=$3
 
-echo $PROFILE_PATH
+PROFILE_PATH="$BUILD_DIR/.profile.d/swig.sh"
 
 ## Functions
 # Syntax sugar.
@@ -81,9 +81,7 @@ puts-step "Making .paybox folder and copying source"
 mkdir -p .paybox
 cp -R $CACHE_DIR/swig .paybox
 echo "Updating path" | indent
-PATH=$PATH:$BUILD_DIR/.paybox/swig/bin/
-export PATH
+set-env PATH $PATH:$BUILD_DIR/.paybox/swig/bin/
 echo "Setting SWIG_LIB environment variable" | indent
-export SWIG_LIB $BUILD_DIR/.paybox/swig/share/swig/2.0.5/
-echo $PATH
+set-env SWIG_LIB $BUILD_DIR/.paybox/swig/share/swig/2.0.5/
 puts-step "SWIG Complile Complete"
