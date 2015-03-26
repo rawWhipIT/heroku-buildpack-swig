@@ -1,13 +1,3 @@
 #!/usr/bin/env bash
 # bin/release <build-dir>
-BUILD_DIR=$1
-echo $PATH
-test=$BUILD_DIR/.paybox/swig/share/swig/2.0.5/
-echo $SWIG_LIB
-
-cat <<EOF
----
-config_vars:
-    PATH: $PATH
-    SWIG_LIB: test
-EOF
+echo "--- {}"
