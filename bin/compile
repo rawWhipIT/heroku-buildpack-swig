@@ -21,10 +21,9 @@ export BUILD_DIR CACHE_DIR BIN_DIR PROFILE_PATH ROOT_DIR
 
 # Utility Functions
 source $BIN_DIR/utils
-puts-step "Preparing SWIG"
-echo "* Stack: $STACK" | indent
-
 load_config
+puts-step "SWIG Buildpack ($BUILDPACK_VERSION)"
+echo "* Stack: $STACK" | indent
 
 # Switch to the repo's context.
 cd $BUILD_DIR
@@ -52,16 +51,10 @@ if [ ! -d $cache_version ]; then
     fi
 else
     echo "SWIG $SWIG_VERSION detected in the cache" | indent
-    FILES=$cache_version
-    for f in $cache_version/*
-    do
-      echo "Swig File: $f file..."
-    done
-
 fi
 puts-step "Making $SWIG_SRC folder and copying source from $cache_version"
 mkdir -p $SWIG_SRC
-cp -R $cache_version/* $SWIG_SRC/
+cp -R $cache_version/* $SWIG_SRC/ #Seems strange but only one which worked
 echo "Updating path in environment" | indent
 set-env PATH $PATH:$APP_DIR/$SWIG_SRC/swig/bin/
 echo "Setting SWIG_LIB environment variable" | indent
