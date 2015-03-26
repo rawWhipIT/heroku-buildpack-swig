@@ -37,7 +37,6 @@ mkdir -p $(dirname $PROFILE_PATH)
 
 puts-step "Checking cache"
 cache_version=$CACHE_DIR/$SWIG_SRC
-echo $cache_version
 # Install SWIG
 if [ ! -d $cache_version ]; then
     cd $BUILD_DIR
@@ -53,6 +52,12 @@ if [ ! -d $cache_version ]; then
     fi
 else
     echo "SWIG $SWIG_VERSION detected in the cache" | indent
+    FILES=$cache_version
+    for f in $cache_version/*
+    do
+      echo "Swig File: $f file..."
+    done
+
 fi
 puts-step "Making $SWIG_SRC folder and copying source from $cache_version"
 mkdir -p $SWIG_SRC
