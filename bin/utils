@@ -46,17 +46,17 @@ function load_config() {
   local config_file="$BUILD_DIR/swig_buildpack.config"
 
   # Source for default versions file from buildpack first
-  source "${build_pack_path}/swig-buildpack.config"
+  source $BUILD_DIR/swig_buildpack.config
 
   if [ -f $custom_config_file ];
   then
     source $custom_config_file
   else
     puts-warn "WARNING: swig_buildpack.config wasn't found in the app"
-    puts-warn "Using default config from Elixir buildpack"
+    exit 1
   fi
 
-  puts-step "Will use the following configuration:"
+  puts-step "SWIG Buildpack will use the following configuration:"
   echo "* Stack ${STACK}" | indent
   echo "* SWIG ${SWIG_VERSION}" | indent
   echo "* SWIG Download URL ${SWIG_DOWNLOAD_URL}" | indent
