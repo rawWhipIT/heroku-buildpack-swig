@@ -1,15 +1,8 @@
 #!/usr/bin/env bash
 # bin/release <build-dir>
-
-BIN_DIR=$(cd $(dirname $0); pwd) # absolute path
-BUILD_DIR=$1
-
-echo $BIN_DIR
-echo $BUILD_DIR
-echo "Path (release is): $PATH"
-
-cat << EOF
+cat <<EOF
 ---
 config_vars:
     PATH: $PATH
+    SWIG_LIB: $SWIG_LIB
 EOF

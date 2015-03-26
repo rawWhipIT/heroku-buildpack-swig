@@ -5,7 +5,7 @@
 #     $ bin/compile <build-dir> <cache-dir> <env-path>
 
 # Fail fast and fail hard.
-#set -eo pipefail
+set -eo pipefail
 
 # Paths.
 BIN_DIR=$(cd $(dirname $0); pwd) # absolute path
@@ -14,13 +14,7 @@ BUILD_DIR=$1
 CACHE_DIR=$2
 ENV_DIR=$3
 
-echo "Bin Dir: $BIN_DIR"
-echo "Root Dir: $ROOT_DIR"
-echo "Cache Directory: $CACHE_DIR"
-echo "Build Directory: $BUILD_DIR"
-echo "Env Dir: $ENV_DIR"
-echo "Profile PAth: $PROFILE_PATH"
-# Functions
+## Functions
 # Syntax sugar.
 indent() {
   sed "s/^/       /"
@@ -50,10 +44,10 @@ set-default-env() {
 un-set-env() {
   echo "unset $1" >> $PROFILE_PATH
 }
+## End Functions
 
 # Switch to the repo's context.
 cd $BUILD_DIR
-pwd
 
 # Where to store the Pip download cache.
 CACHED_DIRS=".heroku"
@@ -65,7 +59,7 @@ mkdir -p $CACHE_DIR
 export PATH=$BUILD_DIR/.heroku/python/bin:$BUILD_DIR/.heroku/vendor/bin:$PATH
 
 # Restore old artifacts from the cache.
-if [-d $CACHED_DIRS/swig]; then
+if [ -d $CACHED_DIRS/swig]; then
     echo "Yes swig is in the $CACHED_DIRS"
 else
     echo "No swig in not in the profile dir"
@@ -100,6 +94,6 @@ echo "Updating path" | indent
 PATH=$PATH:$BUILD_DIR/.paybox/swig/bin/
 export PATH
 echo "Setting SWIG_LIB environment variable" | indent
-export SWIG_LIB=$BUILD_DIR/.paybox/swig/share/swig/2.0.5/
+set-env SWIG_LIB $BUILD_DIR/.paybox/swig/share/swig/2.0.5/
 echo $PATH
 puts-step "SWIG Complile Complete"
