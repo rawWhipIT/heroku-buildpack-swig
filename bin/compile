@@ -63,13 +63,9 @@ echo $PATH | indent
 echo "Setting SWIG_LIB environment variable" | indent
 set-env SWIG_LIB $BUILD_DIR/$SWIG_SRC/swig/share/swig/$SWIG_VERSION/
 SWIG_LIB=$BUILD_DIR/$SWIG_SRC/swig/share/swig/$SWIG_VERSION/
-echo $SWIG_LIB
-export $SWIG_LIB
-cat <<EOF > $BUILD_DIR/export
-export PATH="$PATH:\$PATH"
-export SWIG_LIB="$BUILD_DIR/$SWIG_SRC/swig/share/swig/$SWIG_VERSION/"
-EOF
-
-
-
+export SWIG_LIB
+# cat <<EOF > $BUILD_DIR/export
+# export PATH="$PATH:\$PATH"
+# export SWIG_LIB="$BUILD_DIR/$SWIG_SRC/swig/share/swig/$SWIG_VERSION/"
+# EOF
 puts-step "SWIG Compile Complete"

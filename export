@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+echo $SWIG_LIB
+echo $PATH
+cat <<EOF
+export PATH="$PATH:\$PATH"
+export SWIG_LIB="$BUILD_DIR/$SWIG_SRC/swig/share/swig/$SWIG_VERSION/"
+EOF
