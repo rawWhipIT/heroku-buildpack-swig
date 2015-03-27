@@ -56,7 +56,7 @@ puts-step "Making $SWIG_SRC folder and copying source from $cache_version"
 mkdir -p $SWIG_SRC
 cp -R $cache_version/* $SWIG_SRC/ #Seems strange but only one which worked
 echo "Updating path in environment" | indent
-set-env PATH $PATH:$APP_DIR/$SWIG_SRC/swig/bin/
+set-env PATH $PATH:$BUILD_DIR/$SWIG_SRC/swig/bin/
 echo "Setting SWIG_LIB environment variable" | indent
-set-env SWIG_LIB $APP_DIR/$SWIG_SRC/swig/share/swig/$SWIG_VERSION/
+set-env SWIG_LIB $BUILD_DIR/$SWIG_SRC/swig/share/swig/$SWIG_VERSION/
 puts-step "SWIG Compile Complete"
