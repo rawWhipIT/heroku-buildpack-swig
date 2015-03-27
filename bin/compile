@@ -66,7 +66,7 @@ PATH=$PATH:$BUILD_DIR/$SWIG_SRC/swig/bin
 puts-step "Building Export Script"
 cat <<EOF > export
 export PATH="$PATH:\$PATH"
-export SWIG_LIB="\$BUILD_DIR/\$SWIG_SRC/swig/share/swig/\$SWIG_VERSION"
+export SWIG_LIB="\$BUILD_DIR/$SWIG_SRC/swig/share/swig/$SWIG_VERSION/"
 EOF
 cat export
 puts-step "SWIG Compile Complete"
