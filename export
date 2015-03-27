@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-echo "Running the export script"
-echo $PROFILE_PATH
-echo $PATH
-echo $SWIG_LIB
-
