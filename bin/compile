@@ -27,7 +27,7 @@ echo "* Stack: $STACK" | indent
 
 # Switch to the repo's context.
 cd $BUILD_DIR
-
+echo $BUILD_DIR
 # Create directories
 # The Cache
 mkdir -p $CACHE_DIR
@@ -57,6 +57,12 @@ mkdir -p $SWIG_SRC
 cp -R $cache_version/* $SWIG_SRC/ #Seems strange but only one which worked
 echo "Updating path in environment" | indent
 set-env PATH $PATH:$BUILD_DIR/$SWIG_SRC/swig/bin/
+PATH=$PATH:$BUILD_DIR/$SWIG_SRC/swig/bin/
+export PATH
+echo $PATH | indent
 echo "Setting SWIG_LIB environment variable" | indent
 set-env SWIG_LIB $BUILD_DIR/$SWIG_SRC/swig/share/swig/$SWIG_VERSION/
+SWIG_LIB=$BUILD_DIR/$SWIG_SRC/swig/share/swig/$SWIG_VERSION/
+echo $SWIG_LIB
+export $SWIG_LIB
 puts-step "SWIG Compile Complete"
