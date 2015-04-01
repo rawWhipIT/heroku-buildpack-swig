@@ -25,43 +25,43 @@ load_config
 puts-step "SWIG Buildpack ($BUILDPACK_VERSION)"
 echo "* Stack: $STACK" | indent
 
+ORIG_BUILD_DIR=$BUILD_DIR
+BUILD_DIR=$APP_DIR
+
 # Switch to the repo's context.
 cd $BUILD_DIR
 echo $BUILD_DIR
 # Create directories
 # The Cache
 mkdir -p $CACHE_DIR
-# profile.d
-mkdir -p $(dirname $PROFILE_PATH)
 
 puts-step "Checking cache"
-cache_version=$CACHE_DIR/$SWIG_SRC
+
 # Install SWIG
-if [ ! -d $cache_version ]; then
+if [ ! -d $CACHE_DIR/swig ]; then
     cd $BUILD_DIR
     echo "** Not found in cache - installing" | indent
     puts-step "Fetching and installing SWIG 2 from $SWIG_SOURCE_URL"
-    mkdir -p $cache_version
-    curl $SWIG_SOURCE_URL | tar zxv -C $cache_version &> /dev/null
-    if [ ! -d $cache_version ]; then
-      puts-warn "WARNING: SWIG not downloaded or installed properly"
-      exit 1
-    else
-      echo "SWIG $SWIG_VERSION installed" | indent
-    fi
+    echo "-----> Fetching and installing SWIG 2 from $SWIG_SOURCE_URL"
+    curl -O $SWIG_SOURCE_URL >/dev/null 2>&1
+    echo "-----> Installing ..."
+    tar xzvf swig.$SWIG_VERSION.tar.gz >/dev/null 2>&1
+    mv swig $CACHE_DIR/swig
+    rm swig.$SWIG_VERSION.tar.gz
+    echo "SWIG installed" | indent
 else
     echo "SWIG $SWIG_VERSION detected in the cache" | indent
 fi
-puts-step "Making $SWIG_SRC folder and copying source from $cache_version"
+puts-step "Making $SWIG_SRC folder and copying source from $CACHE_DIR/swig"
 mkdir -p $SWIG_SRC
-cp -R $cache_version/* $SWIG_SRC/ #Seems strange but only one which worked
-#echo "Updating path in environment" | indent
+cp -R $CACHE_DIR/swig $SWIG_SRC 
+echo "Updating path in environment" | indent
 #set-env PATH $PATH:$BUILD_DIR/$SWIG_SRC/swig/bin
-PATH=$PATH:$BUILD_DIR/$SWIG_SRC/swig/bin
-#export PATH
-#echo "Setting SWIG_LIB environment variable" | indent
+PATH=$PATH:$BUILD_DIR/$SWIG_SRC/swig/bin/
+export PATH
+echo "Setting SWIG_LIB environment variable" | indent
 #set-env SWIG_LIB $BUILD_DIR/$SWIG_SRC/swig/share/swig/$SWIG_VERSION
-#SWIG_LIB=$BUILD_DIR/$SWIG_SRC/swig/share/swig/$SWIG_VERSION
+SWIG_LIB=$BUILD_DIR/$SWIG_SRC/swig/share/swig/$SWIG_VERSION/
 #export SWIG_LIB
 puts-step "Building Export Script"
 cat <<EOF > export
